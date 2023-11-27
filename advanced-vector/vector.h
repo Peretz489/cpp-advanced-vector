@@ -310,6 +310,7 @@ public:
     template <typename... Args>
     iterator Emplace(const_iterator pos, Args &&...args)
     {
+        assert(begin()<=pos && pos<=end());
         if (pos == end())
         {
             EmplaceBack(std::forward<Args>(args)...);
@@ -347,6 +348,7 @@ public:
 
     iterator Erase(const_iterator pos) noexcept
     {
+        assert(begin() <= pos && pos < end());
         size_t position = std::distance(cbegin(), pos);
         std::move(begin() + position + 1, end(), begin() + position);
         std::destroy_n(end() - 1, 1);
@@ -355,6 +357,7 @@ public:
     }
     void PopBack() noexcept
     {
+        assert(size_>0);
         std::destroy_n(end() - 1, 1);
         --size_;
     }
